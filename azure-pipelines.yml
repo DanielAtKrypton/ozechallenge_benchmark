@@ -49,19 +49,19 @@ steps:
     pip install pip-tools
   displayName: 'Install Pip Tools'
 
-- task: Cache@2
-  displayName: Cache pip environment
-  inputs:
-    key: pip-sync | "$(Agent.OS)" | requirements/azure-requirements.txt
-    restoreKeys: |
-        pip-sync | "$(Agent.OS)"
-        pip-sync
-    path: $(PIP_CACHE_FOLDER)
-    cacheHitVar: PIP_CACHE_RESTORED
+# - task: Cache@2
+#   displayName: Cache pip environment
+#   inputs:
+#     key: pip-sync | "$(Agent.OS)" | requirements/azure-requirements.txt
+#     restoreKeys: |
+#         pip-sync | "$(Agent.OS)"
+#         pip-sync
+#     path: $(PIP_CACHE_FOLDER)
+#     cacheHitVar: PIP_CACHE_RESTORED
 
 - script: pip-sync requirements/azure-requirements.txt
   displayName: Synchronize virtual environment with given requirements.txt (if not restored from cache)
-  condition: eq(variables.PIP_CACHE_RESTORED, 'false')
+  # condition: eq(variables.PIP_CACHE_RESTORED, 'false')
 
 - script: |
     pytest --user_name $(CHALLENGE_USER_NAME) --user_password $(CHALLENGE_USER_PASSWORD) --junitxml=junit/test-results.xml --cov=src --cov-report=xml --cov-report=html tests/
