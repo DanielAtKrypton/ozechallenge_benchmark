@@ -4,6 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/python
 variables:
   disable.coverage.autogenerate: 'true'
+  PIP_CACHE_FOLDER: '/home/vsts/.cache/pip'
 
 trigger:
 - master
@@ -35,14 +36,18 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
+    echo $(Pipeline.Workspace)
     pip install pip-tools
   displayName: 'Install Pip Tools'
 
 - task: Cache@2
   displayName: Use pip environment
   inputs:
-    key: pip-sync | requirements/azure-requirements.txt
-    path: $(PIP_HOME)
+    key: pip-sync | "$(Agent.OS)" | requirements/azure-requirements.txt
+    restoreKeys: |
+        pip-sync | "$(Agent.OS)"
+        pip-sync
+    path: $(PIP_CACHE_FOLDER)
     cacheHitVar: PIP_CACHE_RESTORED
 
 - script: pip-sync requirements/azure-requirements.txt
