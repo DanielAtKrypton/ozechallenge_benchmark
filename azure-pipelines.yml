@@ -35,7 +35,7 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
-    pip install -m pip-tools
+    pip install pip-tools
   displayName: 'Install Pip Tools'
 
 - task: Cache@2
