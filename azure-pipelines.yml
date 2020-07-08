@@ -45,7 +45,6 @@ steps:
     path: $(Build.SourcesDirectory)/datasets
 
 - script: |
-    echo $(Pipeline.Workspace)
     pip install pip-tools
   displayName: 'Install Pip Tools'
 
